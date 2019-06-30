@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using ShoppingBasket.ProductModel;
 using System.Linq;
+using ShoppingBasket.ShopppingCartModel;
+
 namespace ShoppingBasket.DiscountModel
 {
     public abstract class Discount

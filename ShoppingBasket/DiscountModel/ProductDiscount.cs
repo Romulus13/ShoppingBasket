@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using ShoppingBasket.ShopppingCartModel;
+
+
 namespace ShoppingBasket.DiscountModel
 {
     /// <summary>
@@ -73,6 +76,7 @@ namespace ShoppingBasket.DiscountModel
                 if ( prod.Type == _toBuy && temp.ConditionProducts.Count < _numToBeBought && !temp.ConditionProducts.Contains(prod))
                 {
                     temp.ConditionProducts.Add(prod);
+
                 }
                 if (temp.ConditionProducts.Count == _numToBeBought)
                 {
@@ -123,5 +127,18 @@ namespace ShoppingBasket.DiscountModel
                 nonDiscounted.ToList().ForEach(y => { y.ResetProductCondition(); this._conditionDiscounts.Remove(y); });
             }
         }
+
+        public override string ToString()
+        {
+            StringBuilder toReturn = new StringBuilder( String.Format("Product discount {0}, product type to buy {1}, quantity to buy: {2}, product type to discount, quantity to discount   ", this.Name, this._toBuy.ToString(), this._numToBeBought.ToString(), this._toDiscount.ToString(), this._numToDiscount.ToString()));
+            foreach (ProductConditionDiscount item in this._conditionDiscounts)
+            {
+                toReturn.AppendLine(item.ToString());
+            }
+
+            return toReturn.ToString();
+        }
+
+
     }
 }

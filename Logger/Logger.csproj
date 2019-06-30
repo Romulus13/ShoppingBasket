@@ -5,9 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="NLog.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="NLog.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="NLog" Version="4.6.5" />
     <PackageReference Include="NLog.Config" Version="4.6.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\Romulus\.nuget\packages\nlog.config\4.6.5\contentFiles\any\any\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

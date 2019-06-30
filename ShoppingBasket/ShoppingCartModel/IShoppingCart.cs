@@ -1,7 +1,7 @@
 ﻿
 using ShoppingBasket.ProductModel;
 
-namespace ShoppingBasket
+namespace ShoppingBasket.ShopppingCartModel
 {
     public interface IShoppingCart
     {

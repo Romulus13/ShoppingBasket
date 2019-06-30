@@ -4,10 +4,12 @@ using System.Text;
 using ShoppingBasket.DiscountModel;
 using ShoppingBasket.ProductModel;
 using System.Linq;
-namespace ShoppingBasket
+namespace ShoppingBasket.ShopppingCartModel
 {
     public class ShoppingCart : IShoppingCart
     {
+        
+
         private List<Discount> _applicableDiscounts;
         private Decimal _totalPriceBeforDiscount;
   
@@ -45,13 +47,8 @@ namespace ShoppingBasket
             {
                 Products.Add(product);
                 UnaffectedByDiscount.Add(product);
-                ///TODO calculate all active discounts
                 ApplyDiscounts();
-
-                this.TotalPriceBeforDiscount += product.Price;
-                ///calculate price 
-                this._totalPrice += product.IsDiscounted && product.PriceAfterDiscount.HasValue ? product.PriceAfterDiscount.Value : product.Price;
-                
+                CalculatePrices();
             }
         }
 
@@ -111,10 +108,8 @@ namespace ShoppingBasket
                     ApplyDiscounts();
 
                 }
-                ///TODO calculate all active discounts
-                this.TotalPriceBeforDiscount = product.Price < this.TotalPriceBeforDiscount ? this.TotalPriceBeforDiscount - product.Price : 0;
-                this._totalPrice -= product.IsDiscounted && product.PriceAfterDiscount.HasValue ? product.PriceAfterDiscount.Value : product.Price;
-                
+                CalculatePrices();
+
             }
         }
 
@@ -122,13 +117,33 @@ namespace ShoppingBasket
         {
             this.TotalPrice = 0m;
             this.TotalPriceBeforDiscount = 0m;
+            
+
             foreach (Product item in this._products)
             {
                 this._totalPriceBeforDiscount += item.Price;
                 this._totalPrice += item.IsDiscounted && item.PriceAfterDiscount.HasValue? item.PriceAfterDiscount.Value : item.Price;
             }
+
+            Logger.Logger.LogMessageInfo(PrepareShoppingCartOutput());
         }
    
+        private string PrepareShoppingCartOutput()
+        {
+            StringBuilder toReturn = new StringBuilder();
+            toReturn.AppendFormat("Shopping cart: {0} \n\r", this.CartId);
+            toReturn.AppendLine("Product list:");
+            foreach (var prod in this._products)
+            {
+                toReturn.AppendLine(prod.ToString());
+            }
+            toReturn.AppendLine("Discount list:");
+            foreach (var disc in this._applicableDiscounts)
+            {
+                toReturn.AppendLine(disc.ToString());
+            }
+            return toReturn.ToString();
+        }
 
         public void ApplyDiscounts()
         {

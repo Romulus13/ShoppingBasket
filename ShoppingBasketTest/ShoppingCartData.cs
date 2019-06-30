@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ShoppingBasket;
+
 using ShoppingBasket.DiscountModel;
 using ShoppingBasket.ProductModel;
+using ShoppingBasket.ShopppingCartModel;
 using Xunit;
 
 namespace ShoppingBasketTest
@@ -16,8 +17,8 @@ namespace ShoppingBasketTest
            
 
             ///initialize discounts
-            ProductDiscount disc1 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK); ;
-            ProductDiscount disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK); ;
+            ProductDiscount disc1 = new ProductDiscount(0.5m, 1, ProductType.BREAD, 2, ProductType.BUTTER);
+            ProductDiscount disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK); 
             ///init shopping cart
             ShoppingCart shoppingCart = new ShoppingCart();
             Product milk1 = new Product("Milk", 1.15m, ProductType.MILK);
@@ -88,6 +89,11 @@ namespace ShoppingBasketTest
             shoppingCart4.AddDiscount(disc2);
             Add(shoppingCart4, 9m);
         }
+
+      
+
+
+
 
     }
 }
