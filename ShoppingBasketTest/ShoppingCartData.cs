@@ -16,8 +16,8 @@ namespace ShoppingBasketTest
            
 
             ///initialize discounts
-            DiscountBuyProductGetSameDiscounted disc1 = new DiscountBuyProductGetSameDiscounted(0.5m, new Tuple<ProductType, int>(ProductType.BUTTER, 2), new Tuple<ProductType, int>(ProductType.BREAD, 1));
-            DiscountBuyProductGetSameDiscounted disc2 = new DiscountBuyProductGetSameDiscounted(1m, new Tuple<ProductType, int>(ProductType.MILK, 3), new Tuple<ProductType, int>(ProductType.MILK, 1));
+            ProductDiscount disc1 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK); ;
+            ProductDiscount disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK); ;
             ///init shopping cart
             ShoppingCart shoppingCart = new ShoppingCart();
             Product milk1 = new Product("Milk", 1.15m, ProductType.MILK);
@@ -40,8 +40,8 @@ namespace ShoppingBasketTest
             shoppingCart2.Add(butter3);
             shoppingCart2.Add(bread3);
             shoppingCart2.Add(bread2);
-            disc1 = new DiscountBuyProductGetSameDiscounted(0.5m, new Tuple<ProductType, int>(ProductType.BUTTER, 2), new Tuple<ProductType, int>(ProductType.BREAD, 1));
-            disc2 = new DiscountBuyProductGetSameDiscounted(1m, new Tuple<ProductType, int>(ProductType.MILK, 3), new Tuple<ProductType, int>(ProductType.MILK, 1));
+            disc1 = new ProductDiscount(0.5m, 1, ProductType.BREAD,2, ProductType.BUTTER);
+            disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK);
             shoppingCart2.AddDiscount(disc1);
             shoppingCart2.AddDiscount(disc2);
             Add(shoppingCart2, 3.1m);
@@ -54,8 +54,8 @@ namespace ShoppingBasketTest
             shoppingCart3.Add(milk2_cart3);
             shoppingCart3.Add(milk3_cart3);
             shoppingCart3.Add(milk4_cart3);
-            disc1 = new DiscountBuyProductGetSameDiscounted(0.5m, new Tuple<ProductType, int>(ProductType.BUTTER, 2), new Tuple<ProductType, int>(ProductType.BREAD, 1));
-            disc2 = new DiscountBuyProductGetSameDiscounted(1m, new Tuple<ProductType, int>(ProductType.MILK, 3), new Tuple<ProductType, int>(ProductType.MILK, 1));
+            disc1 = new ProductDiscount(0.5m, 1, ProductType.BREAD, 2, ProductType.BUTTER);
+            disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK);
             shoppingCart3.AddDiscount(disc1);
             shoppingCart3.AddDiscount(disc2);
             Add(shoppingCart3, 3.45m);
@@ -82,8 +82,8 @@ namespace ShoppingBasketTest
             shoppingCart4.Add(butter1_cart4);
             shoppingCart4.Add(bread1_cart4);
             shoppingCart4.Add(butter2_cart4);
-            disc1 = new DiscountBuyProductGetSameDiscounted(0.5m, new Tuple<ProductType, int>(ProductType.BUTTER, 2), new Tuple<ProductType, int>(ProductType.BREAD, 1));
-            disc2 = new DiscountBuyProductGetSameDiscounted(1m, new Tuple<ProductType, int>(ProductType.MILK, 3), new Tuple<ProductType, int>(ProductType.MILK, 1));
+            disc1 = new ProductDiscount(0.5m, 1, ProductType.BREAD, 2, ProductType.BUTTER);
+            disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK);
             shoppingCart4.AddDiscount(disc1);
             shoppingCart4.AddDiscount(disc2);
             Add(shoppingCart4, 9m);

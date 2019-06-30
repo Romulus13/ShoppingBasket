@@ -8,7 +8,6 @@ namespace ShoppingBasket
 {
     public class ShoppingCart : IShoppingCart
     {
-        private Customer _customer;
         private List<Discount> _applicableDiscounts;
         private Decimal _totalPriceBeforDiscount;
   
@@ -60,7 +59,7 @@ namespace ShoppingBasket
         {
             ///we will not add a discount that has already been applied
             ///TODO MAybe throw an exception!?
-            if (discount == null || discount.ConditionSatisfied || discount.DiscountApplied)
+            if (discount == null || discount.IsDiscountApplied())
             {
                 return false;
             }
@@ -82,7 +81,7 @@ namespace ShoppingBasket
                 return false;
             }
 
-            discount.Cancel();
+            discount.RemoveAllConditionDiscounts();
             this._applicableDiscounts.Remove(discount);
             CalculatePrices();
             return true;
@@ -139,7 +138,7 @@ namespace ShoppingBasket
             }
 
             ///we will skip the discounts that have already been applied
-            foreach (Discount discount in this._applicableDiscounts.FindAll(x => !x.DiscountApplied))
+            foreach (Discount discount in this._applicableDiscounts.FindAll(x => !x.IsDiscountApplied()))
             {
                 discount.ApplyDiscountOnCart(this);
             }
@@ -154,7 +153,7 @@ namespace ShoppingBasket
 
             foreach (var discount in this._applicableDiscounts)
             {
-                discount.Cancel();
+                discount.RemoveAllConditionDiscounts();
             }
         }
     }
