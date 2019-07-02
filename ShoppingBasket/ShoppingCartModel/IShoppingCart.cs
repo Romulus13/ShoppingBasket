@@ -1,17 +1,18 @@
 ﻿
+using ShoppingBasket.DiscountModel;
 using ShoppingBasket.ProductModel;
 
 namespace ShoppingBasket.ShopppingCartModel
 {
-    public interface IShoppingCart
+    public interface IShoppingCart<T> where T: class
     {
 
         void Add(Product product);
         void Remove(Product product);
         void CalculatePrices();
-        bool AddDiscount(ShoppingBasket.DiscountModel.Discount discount);
+        bool AddDiscount(Discount<T> discount);
 
-        bool RemoveDiscount(ShoppingBasket.DiscountModel.Discount discount);
+        bool RemoveDiscount(Discount<T> discount);
 
         void ApplyDiscounts();
 

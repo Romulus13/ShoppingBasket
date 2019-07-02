@@ -15,5 +15,14 @@ namespace Logger
             }
         }
 
+        public static void LogException(Exception ex, string message)
+        {
+            if (ex != null)
+            {
+                nLogger.Error(ex, message);
+            }
+
+        }
+
     }
 }

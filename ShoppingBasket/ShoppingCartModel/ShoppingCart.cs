@@ -6,11 +6,12 @@ using ShoppingBasket.ProductModel;
 using System.Linq;
 namespace ShoppingBasket.ShopppingCartModel
 {
-    public class ShoppingCart : IShoppingCart
+    public class ShoppingCart<T> : IShoppingCart<T>
+        where T: class
     {
         
 
-        private List<Discount> _applicableDiscounts;
+        private List<Discount<T>> _applicableDiscounts;
         private Decimal _totalPriceBeforDiscount;
   
 
@@ -23,7 +24,7 @@ namespace ShoppingBasket.ShopppingCartModel
         {
             _products = new List<Product>();
             _unaffectedByDiscount = new List<Product>();
-            _applicableDiscounts = new List<Discount>();
+            _applicableDiscounts = new List<Discount<T>>();
             _cartId = Guid.NewGuid().ToString();
         }
         /// <summary>
@@ -35,7 +36,7 @@ namespace ShoppingBasket.ShopppingCartModel
         public decimal TotalPriceBeforDiscount { get => _totalPriceBeforDiscount; set => _totalPriceBeforDiscount = value; }
         public List<Product> UnaffectedByDiscount { get => _unaffectedByDiscount; set => _unaffectedByDiscount = value; }
         public string CartId { get => _cartId; set => _cartId = value; }
-        public List<Discount> ApplicableDiscounts { get => _applicableDiscounts; set => _applicableDiscounts = value; }
+        public List<Discount<T>> ApplicableDiscounts { get => _applicableDiscounts; set => _applicableDiscounts = value; }
 
         private Decimal _totalPrice;
 
@@ -53,7 +54,7 @@ namespace ShoppingBasket.ShopppingCartModel
             }
         }
 
-        public bool AddDiscount(Discount discount)
+        public bool AddDiscount(Discount<T> discount)
         {
             ///we will not add a discount that has already been applied
             ///TODO MAybe throw an exception!?
@@ -63,7 +64,7 @@ namespace ShoppingBasket.ShopppingCartModel
             }
 
             if (this.ApplicableDiscounts == null)
-                this.ApplicableDiscounts = new List<Discount>() { discount };
+                this.ApplicableDiscounts = new List<Discount<T>>() { discount };
             else
                 this.ApplicableDiscounts.Add(discount);
             ///we call applydiscounts so
@@ -72,7 +73,7 @@ namespace ShoppingBasket.ShopppingCartModel
             return true;
         }
 
-        public bool RemoveDiscount(Discount discount)
+        public bool RemoveDiscount(Discount<T> discount)
         {
             if (discount == null || this.ApplicableDiscounts == null || !this.ApplicableDiscounts.Contains(discount))
             {
@@ -155,7 +156,7 @@ namespace ShoppingBasket.ShopppingCartModel
             }
 
             ///we will skip the discounts that have already been applied
-            foreach (Discount discount in this.ApplicableDiscounts.FindAll(x => !x.IsDiscountApplied()))
+            foreach (Discount<T> discount in this.ApplicableDiscounts.FindAll(x => !x.IsDiscountApplied()))
             {
                 discount.ApplyDiscountOnCart(this);
             }

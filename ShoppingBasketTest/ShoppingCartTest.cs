@@ -12,7 +12,7 @@ namespace ShoppingBasketTest
     {
         [Theory]
         [ClassData(typeof(ShoppingCartData))]
-        public void GetTotalShoppingCartPrice(ShoppingCart cart, decimal totalPriceAfterDiscount)
+        public void GetTotalShoppingCartPrice(ShoppingCart<ProductConditionDiscount> cart, decimal totalPriceAfterDiscount)
         {
             cart.CalculatePrices();
 
@@ -22,7 +22,7 @@ namespace ShoppingBasketTest
         [Fact]
         public void AddProduct_ReturnCount()
         {
-            var shoppingCart = new ShoppingCart();
+            var shoppingCart = new ShoppingCart<ProductConditionDiscount>();
             var product = new Product("Milk", 1.15m, ProductType.MILK);
             shoppingCart.Add(product);
             Assert.Single(shoppingCart.Products);
@@ -31,7 +31,7 @@ namespace ShoppingBasketTest
         [Fact]
         public void AddSameProduct_ReturnCount()
         {
-            var shoppingCart = new ShoppingCart();
+            var shoppingCart = new ShoppingCart<ProductConditionDiscount>();
             var product = new Product("Milk", 1.15m, ProductType.MILK);
             shoppingCart.Add(product);
             shoppingCart.Add(product);
@@ -40,7 +40,7 @@ namespace ShoppingBasketTest
 
         [Theory]
         [MemberData(nameof(AddProductData))]
-        public void AddProduct_ReturnNewPrice(ShoppingCart cart)
+        public void AddProduct_ReturnNewPrice(ShoppingCart<ProductConditionDiscount> cart)
         {
             cart.Add(new Product("Butter", 0.8m, ProductType.BUTTER));
             Assert.Equal(3.25m, cart.TotalPrice);
@@ -48,7 +48,7 @@ namespace ShoppingBasketTest
 
         [Theory]
         [MemberData(nameof(RemoveProductData))]
-        public void RemoveProduct_ReturnNewPrice(ShoppingCart cart)
+        public void RemoveProduct_ReturnNewPrice(ShoppingCart<ProductConditionDiscount> cart)
         {
             Product butter = cart.Products.Find(y => y.Type == ProductType.BUTTER);
             cart.Remove(butter);
@@ -57,7 +57,7 @@ namespace ShoppingBasketTest
 
         [Theory]
         [MemberData(nameof(TestDiscountsData))]
-        public void RemoveDiscount_ReturnNewPrice(ShoppingCart cart)
+        public void RemoveDiscount_ReturnNewPrice(ShoppingCart<ProductConditionDiscount> cart)
         {
             ProductDiscount disc1 = cart.ApplicableDiscounts[0] as ProductDiscount;
             cart.RemoveDiscount(disc1);
@@ -66,7 +66,7 @@ namespace ShoppingBasketTest
 
         [Theory]
         [MemberData(nameof(TestDiscountsData))]
-        public void AddDiscount_ReturnNewPrice(ShoppingCart cart)
+        public void AddDiscount_ReturnNewPrice(ShoppingCart<ProductConditionDiscount> cart)
         {
 
             ProductDiscount disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 1, ProductType.MILK);
@@ -78,16 +78,16 @@ namespace ShoppingBasketTest
 
         
 
-        public static TheoryData<ShoppingCart> AddProductData
+        public static TheoryData<ShoppingCart<ProductConditionDiscount>> AddProductData
         {
             get
             {
-                var data = new TheoryData<ShoppingCart>();
+                var data = new TheoryData<ShoppingCart<ProductConditionDiscount>>();
                 ///initialize discounts
                 ProductDiscount disc1 = new ProductDiscount(0.5m, 1, ProductType.BREAD, 2, ProductType.BUTTER);
                 ProductDiscount disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK); 
                 ///init shopping cart
-                ShoppingCart shoppingCart = new ShoppingCart();
+                ShoppingCart<ProductConditionDiscount> shoppingCart = new ShoppingCart<ProductConditionDiscount>();
                 Product milk1 = new Product("Milk", 1.15m, ProductType.MILK);
                 Product butter1 = new Product("Butter", 0.8m, ProductType.BUTTER);
                 Product bread1 = new Product("Bread", 1.0m, ProductType.BREAD);
@@ -103,16 +103,16 @@ namespace ShoppingBasketTest
         }
 
 
-        public static TheoryData<ShoppingCart> RemoveProductData
+        public static TheoryData<ShoppingCart<ProductConditionDiscount>> RemoveProductData
         {
             get
             {
-                var data = new TheoryData<ShoppingCart>();
+                var data = new TheoryData<ShoppingCart<ProductConditionDiscount>>();
                 ///initialize discounts
                 ProductDiscount disc1 = new ProductDiscount(0.5m, 1, ProductType.BREAD, 2, ProductType.BUTTER);
                 ProductDiscount disc2 = new ProductDiscount(1m, 1, ProductType.MILK, 3, ProductType.MILK);
                 ///init shopping cart
-                ShoppingCart shoppingCart = new ShoppingCart();
+                ShoppingCart<ProductConditionDiscount> shoppingCart = new ShoppingCart<ProductConditionDiscount>();
                 Product milk1 = new Product("Milk", 1.15m, ProductType.MILK);
                 Product butter1 = new Product("Butter", 0.8m, ProductType.BUTTER);
                 Product butter2 = new Product("Butter", 0.8m, ProductType.BUTTER);
@@ -130,16 +130,16 @@ namespace ShoppingBasketTest
         }
 
 
-        public static TheoryData<ShoppingCart> TestDiscountsData
+        public static TheoryData<ShoppingCart<ProductConditionDiscount>> TestDiscountsData
         {
             get
             {
-                var data = new TheoryData<ShoppingCart>();
+                var data = new TheoryData<ShoppingCart<ProductConditionDiscount>>();
                 ///initialize discounts
                 ProductDiscount disc1 = new ProductDiscount(0.5m, 1, ProductType.BREAD, 2, ProductType.BUTTER);
                 
                 ///init shopping cart
-                ShoppingCart shoppingCart = new ShoppingCart();
+                ShoppingCart<ProductConditionDiscount> shoppingCart = new ShoppingCart<ProductConditionDiscount>();
                 Product milk1 = new Product("Milk", 1.15m, ProductType.MILK);
                 Product milk2 = new Product("Milk", 1.15m, ProductType.MILK);
                 Product butter1 = new Product("Butter", 0.8m, ProductType.BUTTER);
