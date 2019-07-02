@@ -56,7 +56,7 @@ namespace ShoppingBasket.ProductModel
         {
             return String.Format("Product id: {0}, name: {1}, type: {2}, price: {3}, price after discount: {4}, product is part of discount condition: {5}, product is discounted: {6}  "
                 , this._productId, this._name, this.Type.ToString(), this._price
-             , this._priceAfterDiscount.HasValue ? this._priceAfterDiscount.Value.ToString() : String.Empty, this.IsPartOfDiscountCondition.ToString(), this.IsDiscounted.ToString());
+             , this._priceAfterDiscount.HasValue ? this._priceAfterDiscount.Value.ToString() : "No discount", this.IsPartOfDiscountCondition.ToString(), this.IsDiscounted.ToString());
         }
     }
 }

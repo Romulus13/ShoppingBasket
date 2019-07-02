@@ -48,7 +48,10 @@ namespace ShoppingBasket.DiscountModel
             }
             return IsDiscountApplied();
         }
-
+        /// <summary>
+        /// Method RemoveAllConditionDiscounts removes product condition disocunts.
+        /// Before the removal all products are reset to their starting state (e.g., no price after discount, all flags set to false)
+        /// </summary>
         public override void RemoveAllConditionDiscounts()
         {
             if (this._conditionDiscounts != null)
@@ -57,27 +60,32 @@ namespace ShoppingBasket.DiscountModel
                 this._conditionDiscounts.Clear();
             }
         }
-
+        /// <summary>
+        /// Checks if any condition discounts are applied
+        /// </summary>
+        /// <returns>False if discounts conditions haven't been met.</returns>
         public override bool IsDiscountApplied()
         {
             return this._conditionDiscounts.Any(x=>x.DiscountApplied);
         }
 
         /// <summary>
-        /// Method which checks if there are product discount which satisfy the condition.
+        /// Method which checks if there are product discounts which satisfy the condition.
         /// </summary>
         /// <param name="cart"></param>
         protected override void CheckDiscountCondition(ShoppingCart cart)
         {
+            //create the starting product condition discount
             var temp = new ProductConditionDiscount();
             foreach (var prod in cart.UnaffectedByDiscount)
             {
-                ///check if the product is a condition for the discount
+                ///check if the product is necessary to apply the discount
                 if ( prod.Type == _toBuy && temp.ConditionProducts.Count < _numToBeBought && !temp.ConditionProducts.Contains(prod))
                 {
                     temp.ConditionProducts.Add(prod);
 
                 }
+                ///if we reached the number ofproducts needed to apply the discount we add it the list and set the flag
                 if (temp.ConditionProducts.Count == _numToBeBought)
                 {
                     temp.ConditionsSatisfied = true;
@@ -88,7 +96,7 @@ namespace ShoppingBasket.DiscountModel
             
         }
         /// <summary>
-        ///
+        ///Method that goes through all the discount whose conditions have been met and applies the discount on the products that meet the requirements.
         /// </summary>
         /// <param name="cart"></param>
         protected override void DiscountProduct(ShoppingCart cart)
@@ -96,16 +104,16 @@ namespace ShoppingBasket.DiscountModel
             foreach (ProductConditionDiscount item in this._conditionDiscounts)
             {
                 var candidatesForDiscount = cart.UnaffectedByDiscount.Except(item.ConditionProducts);
-                ///iterate through all of products currently not a part of discount, and currently not in the condition of
-                ///a discount we are trying to apply
+                ///iterate through all of products currently "free", meaning they are not discounted or a conidtion  for a discount
+                ///also it is needed to remove the products that are the condition for a discount being checked for application
                 foreach (var product in candidatesForDiscount)
                 {
-                    ///if we filled the discounted products with the required number of products we also break
+                    ///if the discounted products number has been met, break from the loop
                     if (item.Discounted.Count >= _numToDiscount)
                     {
                         break;
                     }
-                    ///find the prodduct for discount and apply the discount on its price
+                    ///find the product for discount and apply the discount on its price
                     if (product.Type == _toDiscount && item.Discounted.Count < _numToDiscount && !item.Discounted.Contains(product))
                     {
                         item.Discounted.Add(product);
@@ -130,7 +138,7 @@ namespace ShoppingBasket.DiscountModel
 
         public override string ToString()
         {
-            StringBuilder toReturn = new StringBuilder( String.Format("Product discount {0}, product type to buy {1}, quantity to buy: {2}, product type to discount, quantity to discount   ", this.Name, this._toBuy.ToString(), this._numToBeBought.ToString(), this._toDiscount.ToString(), this._numToDiscount.ToString()));
+            StringBuilder toReturn = new StringBuilder( String.Format("Product discount: {0}, product type to buy: {1}, quantity to buy: {2}, product type to discount {3}, quantity to discount  {4} ", this.Name, this._toBuy.ToString(), this._numToBeBought.ToString(), this._toDiscount.ToString(), this._numToDiscount.ToString()));
             foreach (ProductConditionDiscount item in this._conditionDiscounts)
             {
                 toReturn.AppendLine(item.ToString());

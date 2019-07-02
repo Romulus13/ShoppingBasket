@@ -34,11 +34,17 @@ namespace ShoppingBasket.DiscountModel
             this._id = Guid.NewGuid().ToString();
         }
 
-
+        /// <summary>
+        /// Reset the product condition. 
+        /// Method set the flags of all products to false and removes them from the collections belonging
+        /// to the product condition.
+        /// </summary>
         internal void ResetProductCondition()
         {
+            ///all products are no more part of a condition for the discount
             this.ConditionProducts.ForEach(x => x.IsPartOfDiscountCondition = false);
             this.ConditionProducts.Clear();
+            ///all products are no more discounted
             this.Discounted.ForEach(x => { x.IsDiscounted = false; x.PriceAfterDiscount = null; });
             this.Discounted.Clear();
             this.ConditionsSatisfied = false;
@@ -58,7 +64,7 @@ namespace ShoppingBasket.DiscountModel
                 toReturn.AppendLine(discProd.ToString());
             }
 
-            return base.ToString();
+            return toReturn.ToString();
         }
 
     }

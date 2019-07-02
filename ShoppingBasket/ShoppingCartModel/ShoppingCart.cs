@@ -35,6 +35,7 @@ namespace ShoppingBasket.ShopppingCartModel
         public decimal TotalPriceBeforDiscount { get => _totalPriceBeforDiscount; set => _totalPriceBeforDiscount = value; }
         public List<Product> UnaffectedByDiscount { get => _unaffectedByDiscount; set => _unaffectedByDiscount = value; }
         public string CartId { get => _cartId; set => _cartId = value; }
+        public List<Discount> ApplicableDiscounts { get => _applicableDiscounts; set => _applicableDiscounts = value; }
 
         private Decimal _totalPrice;
 
@@ -61,10 +62,10 @@ namespace ShoppingBasket.ShopppingCartModel
                 return false;
             }
 
-            if (this._applicableDiscounts == null)
-                this._applicableDiscounts = new List<Discount>() { discount };
+            if (this.ApplicableDiscounts == null)
+                this.ApplicableDiscounts = new List<Discount>() { discount };
             else
-                this._applicableDiscounts.Add(discount);
+                this.ApplicableDiscounts.Add(discount);
             ///we call applydiscounts so
             ApplyDiscounts();
             CalculatePrices();
@@ -73,13 +74,13 @@ namespace ShoppingBasket.ShopppingCartModel
 
         public bool RemoveDiscount(Discount discount)
         {
-            if (discount == null || this._applicableDiscounts == null || !this._applicableDiscounts.Contains(discount))
+            if (discount == null || this.ApplicableDiscounts == null || !this.ApplicableDiscounts.Contains(discount))
             {
                 return false;
             }
 
             discount.RemoveAllConditionDiscounts();
-            this._applicableDiscounts.Remove(discount);
+            this.ApplicableDiscounts.Remove(discount);
             CalculatePrices();
             return true;
         }
@@ -138,35 +139,38 @@ namespace ShoppingBasket.ShopppingCartModel
                 toReturn.AppendLine(prod.ToString());
             }
             toReturn.AppendLine("Discount list:");
-            foreach (var disc in this._applicableDiscounts)
+            foreach (var disc in this.ApplicableDiscounts)
             {
                 toReturn.AppendLine(disc.ToString());
             }
+            toReturn.AppendLine("TOTAL CART PRICE:" + this.TotalPrice.ToString());
             return toReturn.ToString();
         }
 
         public void ApplyDiscounts()
         {
-            if (this._applicableDiscounts == null ||this._applicableDiscounts.Count < 1)
+            if (this.ApplicableDiscounts == null ||this.ApplicableDiscounts.Count < 1)
             {
                 return;
             }
 
             ///we will skip the discounts that have already been applied
-            foreach (Discount discount in this._applicableDiscounts.FindAll(x => !x.IsDiscountApplied()))
+            foreach (Discount discount in this.ApplicableDiscounts.FindAll(x => !x.IsDiscountApplied()))
             {
                 discount.ApplyDiscountOnCart(this);
             }
         }
-
+        /// <summary>
+        /// Cancel all discounts.
+        /// </summary>
         public void CancelDiscounts()
         {
-            if (this._applicableDiscounts == null || this._applicableDiscounts.Count < 1)
+            if (this.ApplicableDiscounts == null || this.ApplicableDiscounts.Count < 1)
             {
                 return;
             }
 
-            foreach (var discount in this._applicableDiscounts)
+            foreach (var discount in this.ApplicableDiscounts)
             {
                 discount.RemoveAllConditionDiscounts();
             }
