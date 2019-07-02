@@ -1,7 +1,7 @@
 # ShoppingBasket
 Author: Roman Vazdar
 
-ShoppingBasket class library with xUnit test project in order to demonstrate a easily plugable library for calculating discounts in shopping carts.
+ShoppingBasket is a class library with a xUnit test project that tries to demonstrate a easily plugable library for calculating discounts in shopping carts.
 
 The logging component logs information into the ShoppingBasket\ShoppingBasketTest\bin\Debug\netcoreapp2.2 folder. Specifically the file with the filename "log". A NLog library has been used for logging. With a simple static wrapper class in a seperate project.
 
